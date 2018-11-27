@@ -1,11 +1,16 @@
 import dataprocess
 
 if __name__ == '__main__':
-    mass_train = 'Mass-Training'
-    mass_test = 'Mass-Test'
-    calc_train = 'Calc-Training'
-    calc_test = 'Calc-Test'
-
-
     load = dataprocess.openimages()
-    load.load('train')
+    # Filter out the images to be used for testing and training from the data set.
+    # load.load_and_save('train')
+
+
+    # loads the images from MassTestCropped images, normalized pixels 0-255, resized images by padding with 0's and
+    # saves them to MassTestResized. All images of size 1100 x 1100 in MassTestResized
+    # load.load('Test')
+    # loads the images from MassTrainCropped images, normalized pixels 0-255, resized images by padding with 0's and
+    # saves them to MassTrainResized. All images of size 1100 x 1100 in MassTrainResized
+    # load.load('Train')
+
+    
