@@ -1,4 +1,6 @@
 import dataprocess
+import misfunctions
+import numpy as np
 
 if __name__ == '__main__':
     load = dataprocess.openimages()
@@ -13,4 +15,7 @@ if __name__ == '__main__':
     # saves them to MassTrainResized. All images of size 1100 x 1100 in MassTrainResized
     # load.load('Train')
 
-    
+    mf = misfunctions.classifications()
+    test_y = mf.load_data('Test')
+    train_y = mf.load_data('Train')
+    print('test')
