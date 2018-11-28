@@ -1,9 +1,7 @@
 import dataprocess
-import misfunctions
 import os
-import numpy as np
-import pandas as pd
 import tensorflow as tf
+import neural_networks
 from keras.backend.tensorflow_backend import set_session
 config = tf.ConfigProto()
 config.gpu_options.per_process_gpu_memory_fraction = 0.3
@@ -25,30 +23,7 @@ if __name__ == '__main__':
     # saves them to MassTrainResized. All images of size 1100 x 1100 in MassTrainResized
     # load.load('Train')
 
-    mf = misfunctions.Classifications()
-    y_test = mf.load_data('Test')
-    y_train = mf.load_data('Train')
+    nn = neural_networks.NeuralNetworks()
 
-    x_test = load.load_padded('Test')
-    x_train = load.load_padded('Train')
 
-    min = 0
-    max = 255
-    for i in range(len(x_test)):
-        x_test[i] = (x_test[i] - min) / (max - min)
-
-    for i in range(len(x_train)):
-        x_train[i] = (x_train[i] - min) / (max - min)
-
-    x_test = np.asarray(x_test)
-    x_train = np.asarray(x_train)
-
-    x_train = x_train.reshape(x_train.shape[0], 1100, 1100, 1).astype('float32')
-    x_test = x_test.reshape(x_test.shape[0], 1100, 1100, 1).astype('float32')
-
-    # number of classes
-    num_of_classes = y_test.shape[1]
-    num_of_pixels = x_train.shape[1]
-
-    class_names = np.unique(y_test)
     print('test')
