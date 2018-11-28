@@ -53,7 +53,6 @@ class openimages(object):
             return image_dir
 
     def load(self, mode):
-        parser = argparse.ArgumentParser(description='Pad images')
 
         if mode == 'Test':
             for file in os.listdir(self.DIR3):
@@ -110,3 +109,24 @@ class openimages(object):
         #img = Image.fromarray(pad)
         #img.show()
         return pad
+
+    def load_padded(self, mode):
+
+        if mode == 'Test':
+            images = []
+            for file in os.listdir(self.DIR4):
+                ds = pydicom.dcmread(self.DIR4 + file)
+                # get image numpy array
+                image = ds.pixel_array
+                images.append(image)
+            # return np.asarray(images)
+            return images
+
+        elif mode == 'Train':
+            images = []
+            for file in os.listdir(self.DIR6):
+                ds = pydicom.dcmread(self.DIR6 + file)
+                image = ds.pixel_array
+                images.append(image)
+            # return np.asarray(images)
+            return images
