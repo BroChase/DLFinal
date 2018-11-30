@@ -4,8 +4,9 @@ import matplotlib.pyplot as plt
 import cv2
 import itertools
 from keras.utils.vis_utils import plot_model
+from PIL import Image
 from sklearn.metrics import classification_report, confusion_matrix
-
+import os
 
 class Classifications:
     def __init__(self):
@@ -64,6 +65,21 @@ class Classifications:
             test = np.array(df['pathology'])
 
             return test
+
+class OpenImages:
+
+    def png_to_arrray(self, mode):
+        images = []
+        for file in os.listdir(mode):
+            try:
+                im = Image.open(mode + '/' + file).convert('L')
+                im.show()
+                im = np.asarray(im)
+                images.append(im)
+            except:
+                print('failed to load image %s'.format(file))
+        return np.asarray(images)
+
 
 
 class Eval:

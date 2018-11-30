@@ -35,9 +35,14 @@ if __name__ == '__main__':
     # Resize the files in CalTestCropped into CalTestResized
     # load.load3('Test')
     # Resize the files in CalTrainCropped into CalTrainResized
-    load.load3('Train')
+    #load.load3('Train')
 
-    # nn = neural_networks.NeuralNetworks()
-    #nn.cnn()
+    #load.load_padded('Test')
+    #load.load_padded('Train')
+    #load.load_padded2('Test')
+    #load.load_padded2('Train')
+
+    nn = neural_networks.NeuralNetworks()
+    nn.cnn()
 
     print('test')

@@ -23,6 +23,7 @@ class NeuralNetworks:
         load = dataprocess.openimages()
         mf = misfunctions.Classifications()
         mfeval = misfunctions.Eval()
+        mfOpen = misfunctions.OpenImages()
         # mass data truths
         y_test = mf.load_data_mass('Test')
         y_train = mf.load_data_mass('Train')
@@ -33,14 +34,7 @@ class NeuralNetworks:
         y_test = np.concatenate((y_test, y_test2), axis=0)
         y_train = np.concatenate((y_train, y_train2), axis=0)
 
-
-        x_test = load.load_padded('Test') + load.load_padded2('Test')
-        x_train = load.load_padded('Train') + load.load_padded2('Train')
-
-        # x_test2 = load.load_padded2('Test')
-        # x_train2 = load.load_padded2('Train')
-
-
+        x_test = mfOpen.png_to_arrray('./xTest')
 
         min = np.min(x_test)
         max = np.max(x_test)

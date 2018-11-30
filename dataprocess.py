@@ -4,10 +4,10 @@ import numpy as np
 import pydicom
 import shutil
 import argparse
-from PIL import Image
 import tensorflow as tf
 import cv2
 import math
+import matplotlib.pyplot as plt
 
 class openimages(object):
     def __init__(self):
@@ -33,7 +33,14 @@ class openimages(object):
         self.CROP3 = './CalTrainCropped/'
         self.CROP4 = './CalTestResized/'
         self.CROP5 = './CalTrainResized/'
-        self.CROP6 = 'D:/CalTrainResized/'
+        # self.CROP6 = 'D:/CalTrainResized/'
+
+        # image saving
+        self.TRAIN0 = './xTrain/'
+        self.TEST0 = './xTest/'
+        self.TRAIN1 = './x0Train/'
+        self.TEST1 = './x0Test/'
+
 
 
         pass
@@ -207,15 +214,26 @@ class openimages(object):
             elif mode == 'Train':
                 for file in os.listdir(self.CROP3):
                     ds = pydicom.dcmread(self.CROP3 + file)
+                    # largest image in data set
+                    # ds = pydicom.dcmread(self.DIR5 + '/P_00990_RIGHT_CC_686.dcm')
                     image = ds.pixel_array
+                    # rescale the values of the images to 0 - 255 attempting to keep lossless with unit16
                     rescaled = (255.0 / image.max() * (image - image.min())).astype(np.uint16)
                     rescaled = rescaled[..., np.newaxis]
+                    # Checking image is still correct
+                    # img = Image.fromarray(rescaled)
+                    # img.show()
+                    # largets image in data set was found to be 1082 x 1086. added a few hundred pixels to accompany the
+                    # chance that there are images of longer width vs height dims
                     padded_image = tf.image.resize_image_with_crop_or_pad(rescaled, 512, 512)
                     arr = padded_image.eval()
                     arr = np.squeeze(arr)
-                    ds.PixelData = arr.tobytes()
+                    #im = Image.fromarray(arr)
+                    #im.show()
+                    #im.save(self.CROP5 + file + '.png')
                     ds.Rows, ds.Columns = arr.shape
-                    ds.save_as(self.CROP5 + file)  # 6
+                    ds.PixelData = arr.tobytes()
+                    ds.save_as(self.CROP5 + file)
 
     def pad_image(self, image, target_h, target_w):
         # shape of hxw of image
@@ -250,39 +268,71 @@ class openimages(object):
         if mode == 'Test':
             images = []
             for file in os.listdir(self.DIR4):
-                ds = pydicom.dcmread(self.DIR4 + file)
-                # get image numpy array
-                image = ds.pixel_array
-                images.append(image)
+                try:
+                    ds = pydicom.dcmread(self.DIR4 + file)
+                    # get image numpy array
+                    image = ds.pixel_array
+                    #images.append(image)
+                except:
+                    print(file)
+                try:
+                    file = file.split('.')
+                    plt.imsave(self.TEST0+file[0]+'.png', image)
+                except:
+                    print('failed to save image')
             # return np.asarray(images)
-            return images
+            # return images
 
         elif mode == 'Train':
             images = []
             for file in os.listdir(self.DIR6):
-                ds = pydicom.dcmread(self.DIR6 + file)
-                image = ds.pixel_array
-                images.append(image)
+                try:
+                    ds = pydicom.dcmread(self.DIR6 + file)
+                    image = ds.pixel_array
+                    #images.append(image)
+                except:
+                    print(file)
+                try:
+                    file = file.split('.')
+                    plt.imsave(self.TRAIN0+file[0]+'.png', image)
+                except:
+                    print('failed to save image')
             # return np.asarray(images)
-            return images
+            # return images
 
     def load_padded2(self, mode):
 
         if mode == 'Test':
             images = []
             for file in os.listdir(self.CROP4):
-                ds = pydicom.dcmread(self.CROP4 + file)
-                # get image numpy array
-                image = ds.pixel_array
-                images.append(image)
+                try:
+                    ds = pydicom.dcmread(self.CROP4 + file)
+                    # get image numpy array
+                    image = ds.pixel_array
+                    # images.append(image)
+                except:
+                    print(file)
+                try:
+                    file = file.split('.')
+                    plt.imsave(self.TEST1+file[0]+'.png', image)
+                except:
+                    print('failed to save image')
             # return np.asarray(images)
-            return images
+            # return images
 
         elif mode == 'Train':
             images = []
             for file in os.listdir(self.CROP5):
-                ds = pydicom.dcmread(self.CROP5 + file)
-                image = ds.pixel_array
-                images.append(image)
+                try:
+                    ds = pydicom.dcmread(self.CROP5 + file)
+                    image = ds.pixel_array
+                    #images.append(image)
+                except:
+                    print(file)
+                try:
+                    file = file.split('.')
+                    plt.imsave(self.TRAIN1+file[0]+'.png', image)
+                except:
+                    print('failed to save image')
             # return np.asarray(images)
-            return images
+            #return images
