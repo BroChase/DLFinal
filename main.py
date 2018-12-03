@@ -44,5 +44,5 @@ if __name__ == '__main__':
 
     nn = neural_networks.NeuralNetworks()
     nn.cnn()
-
+    # nn.cnn2()
     print('test')

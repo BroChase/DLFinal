@@ -66,14 +66,51 @@ class Classifications:
 
             return test
 
+    # load the truth values of the data malignant or benign for mass set
+    def load_data_mass2(self, mode):
+        if mode == 'Test':
+            df = pd.read_csv(self.Desc_test)
+            df['breast_density'] = df['breast_density'].astype('category').cat.codes
+            test = np.array(df['breast_density'])
+
+            return test
+
+        elif mode == 'Train':
+            df = pd.read_csv(self.Desc_train)
+            df['breast_density'] = df['breast_density'].astype('category').cat.codes
+            test = np.array(df['breast_density'])
+
+            return test
+
+    # load the truth values of the data malignant or benign for Calc set
+    def load_data_calc2(self, mode):
+        if mode == 'Test':
+            df = pd.read_csv(self.Desc_test2)
+            df['breast density'] = df['breast density'].astype('category').cat.codes
+            df['breast density'] = np.where(df['breast density'] == 1, 0, df['breast density'])
+            df['breast density'] = np.where(df['breast density'] == 2, 1, df['breast density'])
+            df['breast density'] = np.where(df['breast density'] == 3, 2, df['breast density'])
+            df['breast density'] = np.where(df['breast density'] == 4, 3, df['breast density'])
+            test = np.array(df['breast density'])
+
+            return test
+
+        elif mode == 'Train':
+            df = pd.read_csv(self.Desc_train2)
+            df['breast density'] = df['breast density'].astype('category').cat.codes
+            test = np.array(df['breast density'])
+
+            return test
+
 class OpenImages:
 
-    def png_to_arrray(self, mode):
+    def png_to_array(self, mode):
         images = []
         for file in os.listdir(mode):
             try:
                 im = Image.open(mode + '/' + file).convert('L')
-                im.show()
+                #im = Image.open(mode + '/' + file)
+                #im.show()
                 im = np.asarray(im)
                 images.append(im)
             except:
